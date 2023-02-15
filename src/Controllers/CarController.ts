@@ -68,6 +68,22 @@ class CarController {
       this.next(error);
     }
   }
+
+  public async remove() {
+    const { id } = this.req.params;
+    try {
+      const car = await this.service.remove(id);
+      if (!car) {
+        return this.res.status(404).json({ message: Messages.CAR_NOT_FOUND });
+      }
+      return this.res.status(204).json(car);
+    } catch (error) {
+      if ((error as Error).message === Messages.INVALID_ID) {
+        return this.res.status(422).json({ message: Messages.INVALID_ID });
+      }
+      this.next(error);
+    }
+  }
 }
 
 export default CarController;

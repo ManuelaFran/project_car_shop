@@ -1,4 +1,5 @@
 import { Model, models, Schema, model, isValidObjectId, UpdateQuery } from 'mongoose';
+import Messages from '../utils/Messages';
 
 abstract class AbstractODM<T> {
   protected model: Model<T>;
@@ -21,20 +22,27 @@ abstract class AbstractODM<T> {
 
   public async getById(id: string): Promise<T | null> {
     if (!isValidObjectId(id)) {
-      throw new Error('Invalid mongo id');
+      throw new Error(Messages.INVALID_ID);
     }
     return this.model.findById(id);
   }
 
   public async update(_id: string, obj: Partial<T>): Promise<T | null> {
     if (!isValidObjectId(_id)) {
-      throw new Error('Invalid mongo id');
+      throw new Error(Messages.INVALID_ID);
     }
     return this.model.findByIdAndUpdate(
       { _id },
       { ...obj } as UpdateQuery<T>,
       { new: true },
     );
+  }
+
+  public async remove(id: string): Promise<T | null> {
+    if (isValidObjectId(id)) {
+      throw new Error(Messages.INVALID_ID);
+    }
+    return this.model.remove(id);
   }
 }
 
