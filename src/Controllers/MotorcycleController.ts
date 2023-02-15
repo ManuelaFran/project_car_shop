@@ -68,6 +68,22 @@ class MotorcycleController {
       this.next(error);
     }
   }
+
+  public async remove() {
+    const { id } = this.req.params;
+    try {
+      const moto = await this.service.remove(id);
+      if (!moto) {
+        return this.res.status(404).json({ message: Messages.MOTO_NOT_FOUND });
+      }
+      return this.res.status(204).json(moto);
+    } catch (error) {
+      if ((error as Error).message === Messages.INVALID_ID) {
+        return this.res.status(422).json({ message: Messages.INVALID_ID });
+      }
+      this.next(error);
+    }
+  }
 }
 
 export default MotorcycleController;

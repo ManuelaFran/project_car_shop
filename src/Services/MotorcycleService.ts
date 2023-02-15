@@ -33,6 +33,12 @@ class MotorcycleService {
     const setMotorcycle = await motorcycleODM.update(id, moto);
     return this.createMotorcycleDomain(setMotorcycle as IMotorcycle);
   }
+
+  public async remove(id: string) {
+    const motorcycleODM = new MotorcycleODM();
+    const removemotorcycle = await motorcycleODM.remove(id);
+    return this.createMotorcycleDomain(removemotorcycle); 
+  }
 }
 
 export default MotorcycleService;
