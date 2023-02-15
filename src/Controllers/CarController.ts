@@ -48,7 +48,7 @@ class CarController {
       if ((error as Error).message === Messages.INVALID_ID) {
         return this.res.status(422).json({ message: Messages.INVALID_ID });
       }
-      return this.res.status(500).json((error as Error).message);
+      this.next(error);
     }
   }
 
@@ -65,7 +65,7 @@ class CarController {
       if ((error as Error).message === Messages.INVALID_ID) {
         return this.res.status(422).json({ message: Messages.INVALID_ID });
       }
-      return this.res.status(500).json((error as Error).message);
+      this.next(error);
     }
   }
 }
