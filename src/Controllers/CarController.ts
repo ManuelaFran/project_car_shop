@@ -51,6 +51,23 @@ class CarController {
       return this.res.status(500).json((error as Error).message);
     }
   }
+
+  public async update() {
+    const { id } = this.req.params;
+    const car = this.req.body;
+    try {
+      const setCar = await this.service.update(id, car);
+      if (!setCar) {
+        return this.res.status(404).json({ message: Messages.CAR_NOT_FOUND });
+      }
+      return this.res.status(200).json(setCar);
+    } catch (error) {
+      if ((error as Error).message === Messages.INVALID_ID) {
+        return this.res.status(422).json({ message: Messages.INVALID_ID });
+      }
+      return this.res.status(500).json((error as Error).message);
+    }
+  }
 }
 
 export default CarController;
