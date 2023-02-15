@@ -51,6 +51,23 @@ class MotorcycleController {
       this.next(error);
     }
   }
+
+  public async update() {
+    const { id } = this.req.params;
+    const moto = this.req.body;
+    try {
+      const setMoto = await this.service.update(id, moto);
+      if (!setMoto) {
+        return this.res.status(404).json({ message: Messages.MOTO_NOT_FOUND });
+      }
+      return this.res.status(200).json(setMoto);
+    } catch (error) {
+      if ((error as Error).message === Messages.INVALID_ID) {
+        return this.res.status(422).json({ message: Messages.INVALID_ID });
+      }
+      this.next(error);
+    }
+  }
 }
 
 export default MotorcycleController;
